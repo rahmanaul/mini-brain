@@ -5,13 +5,13 @@ import { v } from "convex/values";
 
 export const getUserEmailById = query({
   args: {},
-  returns: v.string(),
+  returns: v.union(v.string(), v.null()),
   handler: async (ctx, _args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("User not found");
+      return null;
     }
     const user = await ctx.db.get(userId);
-    return user?.email as string;
+    return user?.email || null;
   },
 });

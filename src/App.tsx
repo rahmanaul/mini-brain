@@ -30,7 +30,7 @@ export default function App() {
             Welcome,
             {/*  empty space for margin between welcome and email*/}
             <span className="ml-2"></span>
-            {isAuthenticated ? userEmail : "Guest"}
+            {isAuthenticated && userEmail ? userEmail : "Guest"}
           </h3>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Capture notes and ask questions to get AI-powered answers based on your stored knowledge.
