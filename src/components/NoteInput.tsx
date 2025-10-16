@@ -4,6 +4,7 @@ import { api } from "../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Id } from "../../convex/_generated/dataModel";
+import { BlockNoteMarkdownEditor } from "@/components/BlockNoteMarkdownEditor";
 
 // Type matching the listNotes query return
 type SimplifiedNote = {
@@ -69,11 +70,9 @@ export function NoteInput({ onNoteCreated }: NoteInputProps) {
       </CardHeader>
       <CardContent>
         <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your note here... (max 8000 characters)"
-            className="w-full min-h-[120px] p-3 border border-gray-300 rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          <BlockNoteMarkdownEditor
+            initialMarkdown={content}
+            onChangeMarkdown={(md) => setContent(md)}
             disabled={isLoading}
             maxLength={8000}
           />

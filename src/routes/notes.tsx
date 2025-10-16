@@ -7,10 +7,12 @@ import { useState, useEffect } from 'react'
 import { Id } from '../../convex/_generated/dataModel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+// import { Textarea } from '@/components/ui/textarea'
+import { BlockNoteMarkdownEditor } from '@/components/BlockNoteMarkdownEditor'
 import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
 import { EditIcon, Trash2Icon } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
+import MarkdownIt from 'markdown-it'
 import * as z from 'zod'
 
 import {
@@ -243,15 +245,10 @@ function EditNoteForm({
           return (
             <Field data-invalid={isInvalid}>
               <FieldLabel htmlFor={`content-${note._id}`}>Content</FieldLabel>
-              <Textarea
-                id={`content-${note._id}`}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                aria-invalid={isInvalid}
-                placeholder="Write your note content here..."
-                className="min-h-[120px] resize-vertical"
+              <BlockNoteMarkdownEditor
+                initialMarkdown={field.state.value}
+                onChangeMarkdown={(md) => field.handleChange(md)}
+                maxLength={8000}
               />
               <FieldDescription>
                 The main content of your note (max 8000 characters).
@@ -297,7 +294,7 @@ function EditNoteDialog({ note }: { note: SimplifiedNote }) {
           <EditIcon className="w-4 h-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-[90vw] max-w-[900px] sm:w-full sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Note</DialogTitle>
           <DialogDescription>
@@ -321,6 +318,12 @@ function EditNoteDialog({ note }: { note: SimplifiedNote }) {
 }
 
 // notecard using simplified note type
+const md = new MarkdownIt({
+  html: false,
+  linkify: true,
+  breaks: true,
+});
+
 function NoteCard({ note }: { note: SimplifiedNote }) {
   // create a card with the note title and content
   // use type from schema notes
@@ -337,8 +340,12 @@ function NoteCard({ note }: { note: SimplifiedNote }) {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        {/* only show three lines of content */}
-        <p className="whitespace-pre-wrap">{expanded ? note.content : note.content.split('\n').slice(0, 3).join('\n')}</p>
+        {/* render markdown */}
+        {expanded ? (
+          <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: md.render(note.content) }} />
+        ) : (
+          <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: md.render(note.content.split('\n').slice(0, 3).join('\n')) }} />
+        )}
         {/* if content is longer than three lines, show a button to expand the content */}
         {note.content.split('\n').length > 3 && (
           <Button variant="link" className="text-sm text-blue-500 hover:cursor-pointer self-start -ml-4" onClick={() => {

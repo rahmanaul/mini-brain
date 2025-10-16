@@ -13,6 +13,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@blocknote/core": "^0.41.1",
+    "@blocknote/react": "^0.41.1",
+    "@blocknote/shadcn": "^0.41.1",
     "@convex-dev/auth": "^0.0.90",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -28,6 +31,7 @@
     "convex": "^1.27.0",
     "lucide-react": "^0.545.0",
     "openai": "^6.3.0",
+    "markdown-it": "^14.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.1"
