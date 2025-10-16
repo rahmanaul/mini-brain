@@ -22,7 +22,7 @@ export const getQuestionsAndAnswers = query({
     }
     const questions = await ctx.db.query("questions").withIndex("by_user_createdAt_desc", (q) => q.eq("userId", userId)).collect();
     const answers = await ctx.db.query("answers").withIndex("by_user_createdAt_desc", (q) => q.eq("userId", userId)).collect();
-    return questions.map((question) => ({
+    return questions.reverse().map((question) => ({
       ...question,
       answer: answers.find((answer) => answer.questionId === question._id)?.answer || undefined,
       _creationTime: question._creationTime,

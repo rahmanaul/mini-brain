@@ -27,6 +27,10 @@ const navItems = [
     title: "Questions",
     to: "/questions",
   },
+  {
+    title: "Take Note",
+    to: "/take-note",
+  }
 ] as const
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

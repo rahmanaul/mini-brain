@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { Id } from "./_generated/dataModel";
 
 export const getNotes = query({
   args: {},
@@ -15,7 +16,15 @@ export const getNotes = query({
     updatedAt: v.optional(v.number()),
   })),
   handler: async (ctx, _args) => {
-    return await ctx.db.query("notes").collect();
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("User must be authenticated");
+    }
+    return await ctx.db
+      .query("notes")
+      .withIndex("by_user_createdAt_desc", (q) => q.eq("userId", userId))
+      .order("desc")
+      .collect();
   },
 });
 
@@ -65,5 +74,30 @@ export const updateNoteWithEmbedding = mutation({
       embedding: args.embedding,
       updatedAt: Date.now(),
     });
+  },
+});
+
+// get note by note id
+export const getNoteById = query({
+  args: { id: v.id("notes") },
+  returns: v.object({
+    _id: v.id("notes"),
+    title: v.string(),
+    content: v.string(),
+    embedding: v.array(v.number()),
+    userId: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    const note = await ctx.db.query("notes").withIndex("by_id", (q) => q.eq("_id", `notes|${args.id}` as Id<"notes">)).first();
+    if (!note) {
+      throw new Error("Note not found");
+    }
+    return {
+      _id: note._id,
+      title: note.title,
+      content: note.content,
+      embedding: note.embedding,
+      userId: note.userId,
+    };
   },
 });

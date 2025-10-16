@@ -52,7 +52,12 @@ export function BlockNoteMarkdownEditor({
 
   const editor = useCreateBlockNote({});
 
-  // Load initial Markdown into the editor once
+  // Update ref when initialMarkdown prop changes
+  useEffect(() => {
+    initialMarkdownRef.current = initialMarkdown;
+  }, [initialMarkdown]);
+
+  // Load Markdown into the editor when it changes
   useEffect(() => {
     const load = async () => {
       const md = initialMarkdownRef.current;
@@ -68,10 +73,8 @@ export function BlockNoteMarkdownEditor({
         // ignore; keep default empty content
       }
     };
-    // Only on first mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     load();
-  }, [editor]);
+  }, [editor, initialMarkdown]);
 
   // Debounced onChange to emit Markdown content
   const debouncedOnChange = useMemo(() => {
@@ -87,7 +90,7 @@ export function BlockNoteMarkdownEditor({
   }, [editor, onChangeMarkdown, maxLength]);
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className="flex h-full w-full flex-col gap-2">
       <BlockNoteView
         editor={editor}
         editable={!disabled}
@@ -96,7 +99,10 @@ export function BlockNoteMarkdownEditor({
         }}
         shadCNComponents={{}}
         theme="light"
-        className="min-h-[200px] max-h-[60vh] w-full overflow-y-auto rounded-md border border-input bg-background"
+        className={cn(
+          "min-h-[200px] h-full w-full flex-1 overflow-y-auto rounded-md bg-background",
+          className,
+        )}
       />
       {/* simple counter */}
       <div className="text-xs text-muted-foreground">
