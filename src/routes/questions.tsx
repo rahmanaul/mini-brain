@@ -23,6 +23,9 @@ function RouteComponent() {
           </CardContent>
         </Card>
       ))}
+      {questions?.length === 0 && (
+        <h3 className="text-gray-500 text-center">No questions found Let's ask a question</h3>
+      )}
     </main>
   )
 }

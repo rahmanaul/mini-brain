@@ -324,6 +324,8 @@ function EditNoteDialog({ note }: { note: SimplifiedNote }) {
 function NoteCard({ note }: { note: SimplifiedNote }) {
   // create a card with the note title and content
   // use type from schema notes
+
+  const [expanded, setExpanded] = useState(false);
   return (
 
     <Card className="mb-4">
@@ -334,8 +336,15 @@ function NoteCard({ note }: { note: SimplifiedNote }) {
           <DeleteNoteDialog note={note} />
         </div>
       </CardHeader>
-      <CardContent>
-        <p>{note.content}</p>
+      <CardContent className="flex flex-col">
+        {/* only show three lines of content */}
+        <p className="whitespace-pre-wrap">{expanded ? note.content : note.content.split('\n').slice(0, 3).join('\n')}</p>
+        {/* if content is longer than three lines, show a button to expand the content */}
+        {note.content.split('\n').length > 3 && (
+          <Button variant="link" className="text-sm text-blue-500 hover:cursor-pointer self-start -ml-4" onClick={() => {
+            setExpanded(!expanded);
+          }}>{expanded ? 'collapse' : 'see more'}</Button>
+        )}
       </CardContent>
     </Card>
   )
