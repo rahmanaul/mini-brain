@@ -1,5 +1,8 @@
+"use client";
+
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { useConvexAuth } from "convex/react";
 
 import { SignOutButton } from "@/components/Header";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -8,8 +11,27 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { LoginForm } from "@/components/login-form";
 
 function RootLayout() {
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-svh items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex min-h-svh items-center justify-center bg-background px-4">
+        <LoginForm className="w-full max-w-md" />
+      </div>
+    );
+  }
+
   return (
     <SidebarProvider>
       <div className="flex min-h-svh w-full">
