@@ -32,6 +32,7 @@ export const Route = createFileRoute('/take-note')({
 function RouteComponent() {
   const [initialMarkdown, setInitialMarkdown] = useState<string | undefined>(undefined);
   const [markdown, setMarkdown] = useState<string | undefined>(undefined);
+  const [isSaving, setIsSaving] = useState(false);
 
   const { id } = useSearch({ from: '/take-note' });
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ function RouteComponent() {
       return; // Don't save empty content
     }
 
+    setIsSaving(true);
     try {
       if (note) {
         // Update existing note
@@ -81,6 +83,8 @@ function RouteComponent() {
     } catch (error) {
       console.error('Failed to save note:', error);
       // You might want to show an error message to the user here
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -89,9 +93,9 @@ function RouteComponent() {
       <div className="flex items-center gap-2 justify-end">
         <Button
           onClick={handleSave}
-          disabled={!markdown || markdown.trim() === ''}
+          disabled={!markdown || markdown.trim() === '' || isSaving}
         >
-          Save
+          {isSaving ? 'Saving...' : 'Save'}
         </Button>
         <Button
           variant="outline"

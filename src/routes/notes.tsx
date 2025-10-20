@@ -10,9 +10,10 @@ import { Input } from '@/components/ui/input'
 // import { Textarea } from '@/components/ui/textarea'
 import { BlockNoteMarkdownEditor } from '@/components/BlockNoteMarkdownEditor'
 import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
-import { EditIcon, Trash2Icon } from 'lucide-react'
+import { EditIcon, Link, Trash2Icon } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
 import MarkdownIt from 'markdown-it'
+import { Link as TanstackLink } from '@tanstack/react-router'
 import * as z from 'zod'
 
 import {
@@ -335,7 +336,15 @@ function NoteCard({ note }: { note: SimplifiedNote }) {
       <CardHeader className="flex justify-between items-center">
         <CardTitle>{note.title}</CardTitle>
         <div className="flex gap-2">
-          <EditNoteDialog note={note} />
+          {/* <EditNoteDialog note={note} /> */}
+          <TanstackLink
+            to="/take-note"
+            search={{ id: note._id.toString() }}
+          >
+            <Button variant="outline" size="icon" className="hover:cursor-pointer">
+              <EditIcon className="w-4 h-4" />
+            </Button>
+          </TanstackLink>
           <DeleteNoteDialog note={note} />
         </div>
       </CardHeader>
