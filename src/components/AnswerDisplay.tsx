@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@tanstack/react-router";
 
 interface AnswerDisplayProps {
   answer: string;
@@ -25,17 +26,20 @@ export function AnswerDisplay({ answer, refs }: AnswerDisplayProps) {
             </h4>
             <div className="space-y-2">
               {refs.map((ref, index) => (
-                <div
+                <Link
                   key={ref.id}
-                  className="flex items-start space-x-2 p-2 bg-blue-50 rounded-md"
+                  to="/take-note"
+                  search={{ id: ref.id }}
+                  className="flex items-start space-x-2 p-2 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors"
+                  aria-label={`Open note: ${ref.title}`}
                 >
                   <span className="text-xs font-mono text-blue-600 bg-blue-100 px-2 py-1 rounded">
                     {index + 1}
                   </span>
-                  <span className="text-sm text-gray-700 flex-1">
+                  <span className="text-sm text-blue-700 underline">
                     {ref.title}
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

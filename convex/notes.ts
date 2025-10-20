@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { Id } from "./_generated/dataModel";
+// Removed unused Id import
 
 export const getNotes = query({
   args: {},
@@ -88,10 +88,19 @@ export const getNoteById = query({
     userId: v.string(),
   }),
   handler: async (ctx, args) => {
-    const note = await ctx.db.query("notes").withIndex("by_id", (q) => q.eq("_id", `notes|${args.id}` as Id<"notes">)).first();
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("User must be authenticated");
+    }
+
+    const note = await ctx.db.get(args.id);
     if (!note) {
       throw new Error("Note not found");
     }
+    if (note.userId !== userId) {
+      throw new Error("User does not have permission to access this note");
+    }
+
     return {
       _id: note._id,
       title: note.title,
