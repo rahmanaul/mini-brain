@@ -164,7 +164,6 @@ export function PasswordReset() {
                         type="email"
                         value={userEmail}
                         readOnly
-                        className="bg-gray-50"
                       />
                       <span className="text-sm text-green-600">✓</span>
                     </div>
