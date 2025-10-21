@@ -14,14 +14,14 @@ export function AnswerDisplay({ answer, refs }: AnswerDisplayProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="prose prose-sm max-w-none">
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+          <p className="leading-relaxed whitespace-pre-wrap">
             {answer}
           </p>
         </div>
 
         {refs.length > 0 && (
           <div className="border-t pt-4">
-            <h4 className="text-sm font-semibold text-gray-600 mb-2">
+            <h4 className="text-sm font-semibold mb-2">
               References ({refs.length})
             </h4>
             <div className="space-y-2">
