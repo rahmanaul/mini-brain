@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 // import { Textarea } from '@/components/ui/textarea'
 import { BlockNoteMarkdownEditor } from '@/components/BlockNoteMarkdownEditor'
 import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
-import { EditIcon, Link, Trash2Icon } from 'lucide-react'
+import { EditIcon, Trash2Icon } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
 import MarkdownIt from 'markdown-it'
 import { Link as TanstackLink } from '@tanstack/react-router'
@@ -284,39 +284,39 @@ function EditNoteForm({
 }
 
 // edit note dialog
-function EditNoteDialog({ note }: { note: SimplifiedNote }) {
-  const updateNoteWithEmbedding = useAction(api.miniBrain.updateNoteWithEmbedding);
-  const [open, setOpen] = useState(false);
+// function EditNoteDialog({ note }: { note: SimplifiedNote }) {
+//   const updateNoteWithEmbedding = useAction(api.miniBrain.updateNoteWithEmbedding);
+//   const [open, setOpen] = useState(false);
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="hover:cursor-pointer">
-          <EditIcon className="w-4 h-4" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="w-[90vw] max-w-[900px] sm:w-full sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Edit Note</DialogTitle>
-          <DialogDescription>
-            Edit the note title and content below.
-          </DialogDescription>
-        </DialogHeader>
-        <EditNoteForm
-          note={note}
-          onSubmit={async (values) => {
-            await updateNoteWithEmbedding({
-              id: note._id,
-              title: values.title,
-              content: values.content,
-            });
-            setOpen(false);
-          }}
-        />
-      </DialogContent>
-    </Dialog>
-  )
-}
+//   return (
+//     <Dialog open={open} onOpenChange={setOpen}>
+//       <DialogTrigger asChild>
+//         <Button variant="outline" size="icon" className="hover:cursor-pointer">
+//           <EditIcon className="w-4 h-4" />
+//         </Button>
+//       </DialogTrigger>
+//       <DialogContent className="w-[90vw] max-w-[900px] sm:w-full sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
+//         <DialogHeader>
+//           <DialogTitle>Edit Note</DialogTitle>
+//           <DialogDescription>
+//             Edit the note title and content below.
+//           </DialogDescription>
+//         </DialogHeader>
+//         <EditNoteForm
+//           note={note}
+//           onSubmit={async (values) => {
+//             await updateNoteWithEmbedding({
+//               id: note._id,
+//               title: values.title,
+//               content: values.content,
+//             });
+//             setOpen(false);
+//           }}
+//         />
+//       </DialogContent>
+//     </Dialog>
+//   )
+// }
 
 // notecard using simplified note type
 const md = new MarkdownIt({
