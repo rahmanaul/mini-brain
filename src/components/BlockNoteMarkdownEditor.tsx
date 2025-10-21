@@ -4,6 +4,7 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/shadcn";
 import "@blocknote/shadcn/style.css";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
 
 type BlockNoteMarkdownEditorProps = {
   initialMarkdown?: string;
@@ -49,6 +50,7 @@ export function BlockNoteMarkdownEditor({
   className,
 }: BlockNoteMarkdownEditorProps) {
   const initialMarkdownRef = useRef<string | undefined>(initialMarkdown);
+  const { theme } = useTheme();
 
   const editor = useCreateBlockNote({});
 
@@ -98,7 +100,7 @@ export function BlockNoteMarkdownEditor({
           void debouncedOnChange();
         }}
         shadCNComponents={{}}
-        theme="light"
+        theme={theme}
         className={cn(
           "min-h-[200px] h-full w-full flex-1 overflow-y-auto rounded-md bg-background",
           className,

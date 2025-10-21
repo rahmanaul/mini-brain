@@ -12,6 +12,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { LoginForm } from "@/components/login-form";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 function RootLayout() {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -32,46 +34,53 @@ function RootLayout() {
   // Allow public routes to render without authentication
   if (!isAuthenticated && !isPublicRoute) {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-background px-4">
-        <LoginForm className="w-full max-w-md" />
-      </div>
+      <ThemeProvider>
+        <div className="flex min-h-svh items-center justify-center bg-background px-4">
+          <LoginForm className="w-full max-w-md" />
+        </div>
+      </ThemeProvider>
     );
   }
 
   // For public routes, render a simple layout without sidebar
   if (!isAuthenticated && isPublicRoute) {
     return (
-      <div className="min-h-svh bg-background">
-        <Outlet />
-      </div>
+      <ThemeProvider>
+        <div className="min-h-svh bg-background">
+          <Outlet />
+        </div>
+      </ThemeProvider>
     );
   }
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-svh w-full">
-        <AppSidebar />
-        <SidebarInset>
-          <div className="flex min-h-svh flex-col">
-            <header className="border-b bg-background sticky top-0 z-10">
-              <div className="flex h-14 items-center gap-2 px-4">
-                <SidebarTrigger className="-ml-1" />
-                <h1 className="text-lg font-semibold tracking-tight sm:text-xl">
-                  Mini Brain
-                </h1>
-                <div className="ml-auto">
-                  <SignOutButton />
+    <ThemeProvider>
+      <SidebarProvider>
+        <div className="flex min-h-svh w-full">
+          <AppSidebar />
+          <SidebarInset>
+            <div className="flex min-h-svh flex-col">
+              <header className="border-b bg-background sticky top-0 z-10">
+                <div className="flex h-14 items-center gap-2 px-4">
+                  <SidebarTrigger className="-ml-1" />
+                  <h1 className="text-lg font-semibold tracking-tight sm:text-xl">
+                    Mini Brain
+                  </h1>
+                  <div className="ml-auto flex items-center">
+                    <ThemeToggle />
+                    <SignOutButton />
+                  </div>
                 </div>
+              </header>
+              <div className="flex-1 overflow-y-auto">
+                <Outlet />
               </div>
-            </header>
-            <div className="flex-1 overflow-y-auto">
-              <Outlet />
+              {import.meta.env.DEV ? <TanStackRouterDevtools /> : null}
             </div>
-            {import.meta.env.DEV ? <TanStackRouterDevtools /> : null}
-          </div>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </ThemeProvider>
   );
 }
 

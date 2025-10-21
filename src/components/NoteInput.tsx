@@ -77,7 +77,7 @@ export function NoteInput({ onNoteCreated }: NoteInputProps) {
             maxLength={8000}
           />
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-muted-foreground">
               {content.length}/8000 characters
             </span>
           <Button
@@ -91,14 +91,14 @@ export function NoteInput({ onNoteCreated }: NoteInputProps) {
         </form>
 
         {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-700 text-sm">{error}</p>
+          <div className="mt-4 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+            <p className="text-destructive text-sm">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
-            <p className="text-green-700 text-sm">{success}</p>
+          <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-md">
+            <p className="text-green-600 dark:text-green-400 text-sm">{success}</p>
           </div>
         )}
       </CardContent>

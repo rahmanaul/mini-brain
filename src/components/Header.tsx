@@ -1,6 +1,7 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { Button } from "./ui/button";
 import { useConvexAuth } from "convex/react";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function SignOutButton() {
     const { isAuthenticated } = useConvexAuth();
@@ -22,10 +23,13 @@ export function SignOutButton() {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-10 bg-white border-b border-gray-200 p-4">
+    <header className="sticky top-0 z-10 bg-background border-b border-border p-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Mini Brain</h1>
-          <SignOutButton />
+          <h1 className="text-2xl font-bold text-foreground">Mini Brain</h1>
+          <div className="flex items-center">
+            <ThemeToggle />
+            <SignOutButton />
+          </div>
         </div>
       </header>
   );
