@@ -1,20 +1,25 @@
 import { NoteInput } from '@/components/NoteInput'
 import { createFileRoute } from '@tanstack/react-router'
-import { useQuery, useMutation, useAction } from 'convex/react'
+import { 
+  useQuery,
+  useMutation,
+  // useAction 
+} 
+from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { useState, useEffect } from 'react'
 import { Id } from '../../convex/_generated/dataModel'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+// import { Input } from '@/components/ui/input'
 // import { Textarea } from '@/components/ui/textarea'
-import { BlockNoteMarkdownEditor } from '@/components/BlockNoteMarkdownEditor'
-import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
+// import { BlockNoteMarkdownEditor } from '@/components/BlockNoteMarkdownEditor'
+// import { Field, FieldLabel, FieldDescription } from '@/components/ui/field'
 import { EditIcon, Trash2Icon } from 'lucide-react'
-import { useForm } from '@tanstack/react-form'
+// import { useForm } from '@tanstack/react-form'
 import MarkdownIt from 'markdown-it'
 import { Link as TanstackLink } from '@tanstack/react-router'
-import * as z from 'zod'
+// import * as z from 'zod'
 
 import {
   AlertDialog,
@@ -28,14 +33,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "@/components/ui/dialog"
 
 // Generic delete confirmation dialog boilerplate
 interface DeleteConfirmationDialogProps {
@@ -167,121 +172,121 @@ function DeleteNoteDialog({ note }: { note: SimplifiedNote }) {
   )
 }
 
-// Edit note form component
-function EditNoteForm({
-  note,
-  onSubmit,
-}: {
-  note: SimplifiedNote;
-  onSubmit: (values: { title: string; content: string }) => Promise<void>;
-}) {
-  const formSchema = z.object({
-    title: z
-      .string()
-      .min(1, "Title is required")
-      .max(100, "Title must be at most 100 characters"),
-    content: z
-      .string()
-      .min(1, "Content is required")
-      .max(8000, "Content must be at most 8000 characters"),
-  });
+// // Edit note form component
+// function EditNoteForm({
+//   note,
+//   onSubmit,
+// }: {
+//   note: SimplifiedNote;
+//   onSubmit: (values: { title: string; content: string }) => Promise<void>;
+// }) {
+//   const formSchema = z.object({
+//     title: z
+//       .string()
+//       .min(1, "Title is required")
+//       .max(100, "Title must be at most 100 characters"),
+//     content: z
+//       .string()
+//       .min(1, "Content is required")
+//       .max(8000, "Content must be at most 8000 characters"),
+//   });
 
-  const form = useForm({
-    defaultValues: {
-      title: note.title,
-      content: note.content,
-    },
-    validators: {
-      onSubmit: formSchema,
-    },
-    onSubmit: async ({ value }) => {
-      void onSubmit(value);
-    },
-  });
+//   const form = useForm({
+//     defaultValues: {
+//       title: note.title,
+//       content: note.content,
+//     },
+//     validators: {
+//       onSubmit: formSchema,
+//     },
+//     onSubmit: async ({ value }) => {
+//       void onSubmit(value);
+//     },
+//   });
 
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        void form.handleSubmit();
-      }}
-      className="space-y-4"
-    >
-      <form.Field
-        name="title"
-        children={(field) => {
-          const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid;
-          return (
-            <Field data-invalid={isInvalid}>
-              <FieldLabel htmlFor={`title-${note._id}`}>Title</FieldLabel>
-              <Input
-                id={`title-${note._id}`}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                aria-invalid={isInvalid}
-                placeholder="Note title"
-                autoComplete="off"
-              />
-              <FieldDescription>
-                A concise title for your note.
-              </FieldDescription>
-              {isInvalid && field.state.meta.errors && (
-                <p className="text-sm text-destructive">
-                  {field.state.meta.errors.map((error: any) => String(error)).join(", ")}
-                </p>
-              )}
-            </Field>
-          );
-        }}
-      />
+//   return (
+//     <form
+//       onSubmit={(e) => {
+//         e.preventDefault();
+//         void form.handleSubmit();
+//       }}
+//       className="space-y-4"
+//     >
+//       <form.Field
+//         name="title"
+//         children={(field) => {
+//           const isInvalid =
+//             field.state.meta.isTouched && !field.state.meta.isValid;
+//           return (
+//             <Field data-invalid={isInvalid}>
+//               <FieldLabel htmlFor={`title-${note._id}`}>Title</FieldLabel>
+//               <Input
+//                 id={`title-${note._id}`}
+//                 name={field.name}
+//                 value={field.state.value}
+//                 onBlur={field.handleBlur}
+//                 onChange={(e) => field.handleChange(e.target.value)}
+//                 aria-invalid={isInvalid}
+//                 placeholder="Note title"
+//                 autoComplete="off"
+//               />
+//               <FieldDescription>
+//                 A concise title for your note.
+//               </FieldDescription>
+//               {isInvalid && field.state.meta.errors && (
+//                 <p className="text-sm text-destructive">
+//                   {field.state.meta.errors.map((error: any) => String(error)).join(", ")}
+//                 </p>
+//               )}
+//             </Field>
+//           );
+//         }}
+//       />
 
-      <form.Field
-        name="content"
-        children={(field) => {
-          const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid;
-          return (
-            <Field data-invalid={isInvalid}>
-              <FieldLabel htmlFor={`content-${note._id}`}>Content</FieldLabel>
-              <BlockNoteMarkdownEditor
-                initialMarkdown={field.state.value}
-                onChangeMarkdown={(md) => field.handleChange(md)}
-                maxLength={8000}
-              />
-              <FieldDescription>
-                The main content of your note (max 8000 characters).
-                {field.state.value && (
-                  <span className="ml-2 text-xs">
-                    {field.state.value.length}/8000
-                  </span>
-                )}
-              </FieldDescription>
-              {isInvalid && field.state.meta.errors && (
-                <p className="text-sm text-destructive">
-                  {field.state.meta.errors.map((error: any) => String(error)).join(", ")}
-                </p>
-              )}
-            </Field>
-          );
-        }}
-      />
+//       <form.Field
+//         name="content"
+//         children={(field) => {
+//           const isInvalid =
+//             field.state.meta.isTouched && !field.state.meta.isValid;
+//           return (
+//             <Field data-invalid={isInvalid}>
+//               <FieldLabel htmlFor={`content-${note._id}`}>Content</FieldLabel>
+//               <BlockNoteMarkdownEditor
+//                 initialMarkdown={field.state.value}
+//                 onChangeMarkdown={(md) => field.handleChange(md)}
+//                 maxLength={8000}
+//               />
+//               <FieldDescription>
+//                 The main content of your note (max 8000 characters).
+//                 {field.state.value && (
+//                   <span className="ml-2 text-xs">
+//                     {field.state.value.length}/8000
+//                   </span>
+//                 )}
+//               </FieldDescription>
+//               {isInvalid && field.state.meta.errors && (
+//                 <p className="text-sm text-destructive">
+//                   {field.state.meta.errors.map((error: any) => String(error)).join(", ")}
+//                 </p>
+//               )}
+//             </Field>
+//           );
+//         }}
+//       />
 
-      <div className="flex justify-end space-x-2">
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit}>
-              {isSubmitting ? "Saving..." : "Save Changes"}
-            </Button>
-          )}
-        />
-      </div>
-    </form>
-  );
-}
+//       <div className="flex justify-end space-x-2">
+//         <form.Subscribe
+//           selector={(state) => [state.canSubmit, state.isSubmitting]}
+//           children={([canSubmit, isSubmitting]) => (
+//             <Button type="submit" disabled={!canSubmit}>
+//               {isSubmitting ? "Saving..." : "Save Changes"}
+//             </Button>
+//           )}
+//         />
+//       </div>
+//     </form>
+//   );
+// }
 
 // edit note dialog
 // function EditNoteDialog({ note }: { note: SimplifiedNote }) {
