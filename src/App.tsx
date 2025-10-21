@@ -17,20 +17,20 @@ export default function App() {
   const userEmail = useQuery(api.user.getUserEmailById);
   const isAuthenticated = useConvexAuth().isAuthenticated;
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen">
       <div className="max-w-6xl mx-auto p-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold mb-4">
             Your Personal Knowledge Assistant
           </h2>
           {/* greet user with their email */}
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <h3 className="text-2xl font-bold mb-4">
             Welcome,
             {/*  empty space for margin between welcome and email*/}
             <span className="ml-2"></span>
             {isAuthenticated && userEmail ? userEmail : "Guest"}
           </h3>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg max-w-2xl mx-auto">
             Capture notes and ask questions to get AI-powered answers based on your stored knowledge.
           </p>
         </div>

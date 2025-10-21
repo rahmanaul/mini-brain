@@ -12,7 +12,7 @@ function RouteComponent() {
   const questions = useQuery(api.questions.getQuestionsAndAnswers);
   return (
     <main className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Questions History</h2>
+      <h2 className="text-2xl font-bold mb-4">Questions History</h2>
       {questions?.map((question) => (
         <Card key={question._id} className="mb-4">
           <CardHeader className="flex justify-between items-center">
