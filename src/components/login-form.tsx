@@ -23,10 +23,13 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { signIn } = useAuthActions();
   const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const { signIn } = useAuthActions();
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -53,13 +56,30 @@ export function LoginForm({
               formData.set("flow", flow);
 
               try {
-                await signIn("password", formData);
+                if (flow === "signUp") {
+                  // For signup, use normal Convex Auth flow
+                  await signIn("password", formData);
+                  
+                  // If we get here, signup was successful
+                  // Redirect to OTP verification page
+                  window.location.href = `/verify-otp?email=${encodeURIComponent(email)}`;
+                } else {
+                  // For sign in, use normal Convex Auth flow
+                  await signIn("password", formData);
+                }
               } catch (submissionError) {
                 const message =
                   submissionError instanceof Error
                     ? submissionError.message
                     : "Something went wrong";
-                setError(message);
+                
+                // Check if this is a signup that requires email verification
+                if (flow === "signUp" && message.includes("check your email")) {
+                  // Redirect to OTP verification page
+                  window.location.href = `/verify-otp?email=${encodeURIComponent(email)}`;
+                } else {
+                  setError(message);
+                }
               } finally {
                 setIsSubmitting(false);
               }
@@ -74,6 +94,8 @@ export function LoginForm({
                   type="email"
                   placeholder="you@example.com"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </Field>
@@ -96,7 +118,7 @@ export function LoginForm({
                       : "Sign up"}
                 </Button>
                 <FieldDescription className="text-center">
-                  {flow === "signIn" ? "Don’t have an account?" : "Already have an account?"}{" "}
+                  {flow === "signIn" ? "Don't have an account?" : "Already have an account?"}{" "}
                   <button
                     type="button"
                     className="underline underline-offset-4 hover:no-underline"
@@ -110,10 +132,24 @@ export function LoginForm({
                     {flow === "signIn" ? "Sign up" : "Sign in"}
                   </button>
                 </FieldDescription>
-                {error ? (
-                  <FieldDescription className="text-center text-destructive">
-                    {error}
+                {flow === "signIn" && (
+                  <FieldDescription className="text-center">
+                    <button
+                      type="button"
+                      className="underline underline-offset-4 hover:no-underline"
+                      onClick={() => window.location.href = "/reset-password"}
+                      disabled={isSubmitting}
+                    >
+                      Forgot your password?
+                    </button>
                   </FieldDescription>
+                )}
+                {error ? (
+                  <div className="text-center">
+                    <FieldDescription className="text-destructive mb-2">
+                      {error}
+                    </FieldDescription>
+                  </div>
                 ) : null}
               </Field>
             </FieldGroup>

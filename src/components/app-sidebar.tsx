@@ -30,7 +30,11 @@ const navItems = [
   {
     title: "Take Note",
     to: "/take-note",
-  }
+  },
+  {
+    title: "Reset Password",
+    to: "/reset-password",
+  },
 ] as const
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

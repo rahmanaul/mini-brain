@@ -85,18 +85,30 @@ function  SignInForm() {
           >
             {flow === "signIn" ? "Sign in" : "Sign up"}
           </Button>
-          <div className="flex flex-row gap-2">
-            <span>
-              {flow === "signIn"
-                ? "Don't have an account?"
-                : "Already have an account?"}
-            </span>
-            <span
-              className="text-dark dark:text-light underline hover:no-underline cursor-pointer"
-              onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
-            >
-              {flow === "signIn" ? "Sign up instead" : "Sign in instead"}
-            </span>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2">
+              <span>
+                {flow === "signIn"
+                  ? "Don't have an account?"
+                  : "Already have an account?"}
+              </span>
+              <span
+                className="text-dark dark:text-light underline hover:no-underline cursor-pointer"
+                onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
+              >
+                {flow === "signIn" ? "Sign up instead" : "Sign in instead"}
+              </span>
+            </div>
+            {flow === "signIn" && (
+              <div className="flex justify-center">
+                <span
+                  className="text-dark dark:text-light underline hover:no-underline cursor-pointer text-sm"
+                  onClick={() => window.location.href = "/reset-password"}
+                >
+                  Forgot your password?
+                </span>
+              </div>
+            )}
           </div>
           {error && (
             <div className="bg-red-500/20 border-2 border-red-500/50 rounded-md p-2">

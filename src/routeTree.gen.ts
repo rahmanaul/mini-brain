@@ -9,14 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyOtpRouteImport } from './routes/verify-otp'
 import { Route as TakeNoteRouteImport } from './routes/take-note'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VerifyOtpRoute = VerifyOtpRouteImport.update({
+  id: '/verify-otp',
+  path: '/verify-otp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TakeNoteRoute = TakeNoteRouteImport.update({
   id: '/take-note',
   path: '/take-note',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuestionsRoute = QuestionsRouteImport.update({
@@ -39,43 +51,84 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/notes': typeof NotesRoute
   '/questions': typeof QuestionsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/take-note': typeof TakeNoteRoute
+  '/verify-otp': typeof VerifyOtpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/notes': typeof NotesRoute
   '/questions': typeof QuestionsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/take-note': typeof TakeNoteRoute
+  '/verify-otp': typeof VerifyOtpRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/notes': typeof NotesRoute
   '/questions': typeof QuestionsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/take-note': typeof TakeNoteRoute
+  '/verify-otp': typeof VerifyOtpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/notes' | '/questions' | '/take-note'
+  fullPaths:
+    | '/'
+    | '/notes'
+    | '/questions'
+    | '/reset-password'
+    | '/take-note'
+    | '/verify-otp'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/notes' | '/questions' | '/take-note'
-  id: '__root__' | '/' | '/notes' | '/questions' | '/take-note'
+  to:
+    | '/'
+    | '/notes'
+    | '/questions'
+    | '/reset-password'
+    | '/take-note'
+    | '/verify-otp'
+  id:
+    | '__root__'
+    | '/'
+    | '/notes'
+    | '/questions'
+    | '/reset-password'
+    | '/take-note'
+    | '/verify-otp'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   NotesRoute: typeof NotesRoute
   QuestionsRoute: typeof QuestionsRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   TakeNoteRoute: typeof TakeNoteRoute
+  VerifyOtpRoute: typeof VerifyOtpRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-otp': {
+      id: '/verify-otp'
+      path: '/verify-otp'
+      fullPath: '/verify-otp'
+      preLoaderRoute: typeof VerifyOtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/take-note': {
       id: '/take-note'
       path: '/take-note'
       fullPath: '/take-note'
       preLoaderRoute: typeof TakeNoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/questions': {
@@ -106,7 +159,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NotesRoute: NotesRoute,
   QuestionsRoute: QuestionsRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   TakeNoteRoute: TakeNoteRoute,
+  VerifyOtpRoute: VerifyOtpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

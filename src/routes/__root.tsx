@@ -1,6 +1,6 @@
 "use client";
 
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useConvexAuth } from "convex/react";
 
@@ -15,6 +15,11 @@ import { LoginForm } from "@/components/login-form";
 
 function RootLayout() {
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const location = useLocation();
+
+  // Public routes that don't require authentication
+  const publicRoutes = ['/reset-password', '/verify-otp'];
+  const isPublicRoute = publicRoutes.includes(location.pathname);
 
   if (isLoading) {
     return (
@@ -24,10 +29,20 @@ function RootLayout() {
     );
   }
 
-  if (!isAuthenticated) {
+  // Allow public routes to render without authentication
+  if (!isAuthenticated && !isPublicRoute) {
     return (
       <div className="flex min-h-svh items-center justify-center bg-background px-4">
         <LoginForm className="w-full max-w-md" />
+      </div>
+    );
+  }
+
+  // For public routes, render a simple layout without sidebar
+  if (!isAuthenticated && isPublicRoute) {
+    return (
+      <div className="min-h-svh bg-background">
+        <Outlet />
       </div>
     );
   }
