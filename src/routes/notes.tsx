@@ -136,12 +136,12 @@ function RouteComponent() {
         <div className="space-y-4">
           {notes === undefined && !optimisticNote ? (
             <div className="text-center py-8">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-              <p className="mt-2 text-gray-600">Loading notes...</p>
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <p className="mt-2 text-muted-foreground">Loading notes...</p>
             </div>
           ) : displayNotes.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">No notes yet. Add your first note above!</p>
+              <p className="text-muted-foreground">No notes yet. Add your first note above!</p>
             </div>
           ) : (
             displayNotes.map((note) => (
@@ -362,7 +362,7 @@ function NoteCard({ note }: { note: SimplifiedNote }) {
         )}
         {/* if content is longer than three lines, show a button to expand the content */}
         {note.content.split('\n').length > 3 && (
-          <Button variant="link" className="text-sm text-blue-500 hover:cursor-pointer self-start -ml-4" onClick={() => {
+          <Button variant="link" className="text-sm text-primary hover:cursor-pointer self-start -ml-4" onClick={() => {
             setExpanded(!expanded);
           }}>{expanded ? 'collapse' : 'see more'}</Button>
         )}
